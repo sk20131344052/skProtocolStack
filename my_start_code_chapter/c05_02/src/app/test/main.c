@@ -38,22 +38,13 @@ net_err_t net_dev_init(void)
 	return NET_ERR_OK;
 }
 
-
-#define DBG_TEST    DBG_LEVEL_INFO
-//#define DBG_TEST    DBG_LEVEL_WARNING
-//#define DBG_TEST    DBG_LEVEL_ERROR
-//#define DBG_TEST    DBG_LEVEL_NONE
-
 int main (void) 
 {
-    // 不同等级调试输出测试
-    dbg_info(DBG_TEST, "info");
-    dbg_warning(DBG_TEST, "warning");
-    dbg_error(DBG_TEST, "error");
+	// 调试输出
+	dbg_info(DBG_STYLE_ERROR"dbg_info");
+    dbg_info(DBG_STYLE_RESET"dbg_info");
+	dbg_info(DBG_STYLE_WARING"dbg_info");
 
-	//断言调试
-    dbg_assert(1==1, "failed");
-    dbg_assert(1==0, "failed")
 
 	//初始化协议栈
 	net_init();

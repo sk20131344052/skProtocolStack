@@ -51,9 +51,6 @@ int main (void)
     dbg_warning(DBG_TEST, "warning");
     dbg_error(DBG_TEST, "error");
 
-	//断言调试
-    dbg_assert(1==1, "failed");
-    dbg_assert(1==0, "failed")
 
 	//初始化协议栈
 	net_init();
