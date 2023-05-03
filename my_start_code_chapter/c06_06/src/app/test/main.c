@@ -16,7 +16,6 @@
 #include "net.h"
 #include "dbg.h"
 #include "nlist.h"
-#include "mblock.h"
 
 static sys_sem_t sem;
 static sys_mutex_t mutex;
@@ -117,49 +116,7 @@ void nlist_test(void)
         plat_printf("id:%d\n", nlist_entry(p, tnode_t, node)->id);
    }
 
- 	// 插入到指定结点之后
-    plat_printf("insert after\n");
-    for (int i = 0; i < NODE_CNT; i++) 
-	{
-        nlist_insert_after(&list, nlist_first(&list), &node[i].node);
-    }
-
-    // 遍历打印
-    nlist_for_each(p, &list) 
-	{
-        tnode_t * tnode = nlist_entry(p, tnode_t, node);
-        plat_printf("id:%d\n", tnode->id);
-    }
-
-
 }
-
-
-
-void mblock_test(void)
-{
-	static uint8_t buffer[10][100];
-	mblock_t blist;
-
-	mblock_init(&blist, buffer, 100, 10, NLOCKER_THREAD);
-	void *temp[10];
-
-	// 从管理器中逐个分配内存块
-	for(int i=0; i<10; i++)
-	{
-		temp[i] = mblock_alloc(&blist, 0);
-		plat_printf("block: %p, free count:%d\n", temp[i], mblock_free_cnt(&blist));
-	}
-
-	for(int i=0; i<10; i++)
-	{
-		mblock_free(&blist, temp[i]);
-		plat_printf("free count:%d\n", mblock_free_cnt(&blist));
-	}
-
-	mblock_destroy(&blist);
-}
-
 
 
 /**
@@ -168,26 +125,20 @@ void mblock_test(void)
 void basic_test(void) 
 {
     nlist_test();
-	mblock_test();
 }
 
 
 
 int main (void) 
 {
-	
-	//基础测试
-	basic_test();
-
-
     // 不同等级调试输出测试
-    // dbg_info(DBG_TEST, "info");
-    // dbg_warning(DBG_TEST, "warning");
-    // dbg_error(DBG_TEST, "error");
+    dbg_info(DBG_TEST, "info");
+    dbg_warning(DBG_TEST, "warning");
+    dbg_error(DBG_TEST, "error");
 
 	//断言调试
-    // dbg_assert(1==1, "failed");
-    // dbg_assert(1==0, "failed")
+    dbg_assert(1==1, "failed");
+    dbg_assert(1==0, "failed")
 
 	//初始化协议栈
 	net_init();
@@ -197,6 +148,9 @@ int main (void)
 
 	//初始化网络接口
 	net_dev_init();
+
+	//基础测试
+	basic_test();
 
 
 	while (1)

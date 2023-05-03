@@ -142,22 +142,6 @@ void mblock_test(void)
 	mblock_t blist;
 
 	mblock_init(&blist, buffer, 100, 10, NLOCKER_THREAD);
-	void *temp[10];
-
-	// 从管理器中逐个分配内存块
-	for(int i=0; i<10; i++)
-	{
-		temp[i] = mblock_alloc(&blist, 0);
-		plat_printf("block: %p, free count:%d\n", temp[i], mblock_free_cnt(&blist));
-	}
-
-	for(int i=0; i<10; i++)
-	{
-		mblock_free(&blist, temp[i]);
-		plat_printf("free count:%d\n", mblock_free_cnt(&blist));
-	}
-
-	mblock_destroy(&blist);
 }
 
 
