@@ -11,37 +11,6 @@ static fixq_t msg_queue;              //消息队列
 static exmsg_t msg_buffer[EXMSG_MSG_CNT];   // 消息块
 static mblock_t msg_block;                  //消息分配器
 
-/**
- * @brief 收到来自网卡的消息
- */
-net_err_t exmsg_netif_in(void)
-{
-    // 分配一个消息结构
-    exmsg_t *msg = mblock_alloc(&msg_block, -1);
-    if(!msg)
-    {
-        dbg_warning(DBG_MSG, "no free exmsg");
-        return NET_ERR_MEM;
-    }
-
-    // 写消息内容
-    static int id = 0;
-    msg->type = NET_EXMSG_NETIF_IN;
-    msg->id = id++;
-
-    // 发送消息
-    net_err_t err = fixq_send(&msg_queue, msg, -1);
-    if(err<0)
-    {
-        dbg_warning(DBG_MSG, "fixq full");
-        mblock_free(&msg_block, msg);
-        return err;
-    }
-
-    return NET_ERR_OK;
-}
-
-
 
 
 /**
@@ -88,16 +57,6 @@ static void work_thread(void *arg)
 
     while (1)
     {
-
-        //接收消息
-        exmsg_t *msg = (exmsg_t *)fixq_recv(&msg_queue, 0);
-
-        // 消息到了，打印提示
-        plat_printf("recieve a msg(%p): %d  %d\n", msg, msg->type, msg->id);
-
-        // 释放消息
-        mblock_free(&msg_block, msg);
-
         sys_sleep(1);
     }
     

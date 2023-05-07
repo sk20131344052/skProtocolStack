@@ -88,16 +88,6 @@ static void work_thread(void *arg)
 
     while (1)
     {
-
-        //接收消息
-        exmsg_t *msg = (exmsg_t *)fixq_recv(&msg_queue, 0);
-
-        // 消息到了，打印提示
-        plat_printf("recieve a msg(%p): %d  %d\n", msg, msg->type, msg->id);
-
-        // 释放消息
-        mblock_free(&msg_block, msg);
-
         sys_sleep(1);
     }
     

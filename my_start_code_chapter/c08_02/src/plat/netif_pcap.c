@@ -1,5 +1,4 @@
 ﻿#include "net_plat.h"
-#include "exmsg.h"
 
 /**
  * @brief 数据包接收线程, 不断地收数据包
@@ -13,8 +12,6 @@ void recv_thread(void *arg)
     while(1)
     {
         sys_sleep(1);
-
-        exmsg_netif_in();
     }
 }
 

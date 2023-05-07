@@ -140,29 +140,3 @@ void *fixq_recv(fixq_t *q, int tmo)
     return msg;
 
 }
-
-
-/**
- * 销毁队列
- * @param list 待销毁的队列
- */
-void fixq_destroy(fixq_t *q)
-{
-    nlocker_destroy(&q->locker);
-    sys_sem_free(q->send_sem);
-    sys_sem_free(q->recv_sem);
-}
-
-
-/**
- * @brief 取缓冲中消息的数量
- */
-int fixq_count(fixq_t *q)
-{
-    nlocker_lock(&q->locker);
-    int count = q->cnt;
-    nlocker_unlock(&q->locker);
-    return count;
-}
-
-

@@ -2,15 +2,12 @@
 #define EXMSG_H
 
 #include "net_err.h"
-#include "nlist.h"
 
 /**
  * @brief 传递给核心线程的消息
  */
 typedef struct _exmsg_t
 {
-    nlist_node_t node;
-
     //消息类型
     enum
     {
